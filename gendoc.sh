@@ -14,7 +14,6 @@ projectname=$(pwd | sed "s/^.*\///g")
 docdirectory="Documentation"
 defaultcommitmessage="Update documentation."
 docsetutil=`xcrun --find docsetutil`
-EDITOR=vi
 
 # if we're on the documentation branch, something's gone wrong
 echo $codebranch
@@ -29,7 +28,7 @@ fi
 status=`git status -s`
 if [ "${status}" != "" ]
 then
-    echo Git has outstanding changes - commit or revert them first.
+    echo "Git has outstanding changes - commit or revert them first."
     exit 1
 fi
 
