@@ -57,11 +57,12 @@ if git show-ref --tags --quiet --verify -- "refs/heads/$docbranch"
 then
     echo "Cloning $docbranch branch"
 else
-	echo "Creating $docbranch branch"
-	# create the docbranch (explained on http://pages.github.com/)
-	git symbolic-ref HEAD "refs/heads/$docbranch"
-	rm .git/index
-	git clean -fdx
+    echo "Creating $docbranch branch"
+    git stash
+    # create the docbranch (explained on http://pages.github.com/)
+    git symbolic-ref HEAD "refs/heads/$docbranch"
+    rm .git/index
+    git clean -fdx
     mkdir "$docdirectory"
     touch "$docdirectory/placeholder.txt"
     git add "$docdirectory"
@@ -69,6 +70,7 @@ else
 
     # return to the branch we were on
     git checkout "$codebranch"
+    git stash pop
 fi
 
 # clone doc branch of current repo into temporary location
