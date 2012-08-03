@@ -3,10 +3,22 @@
 # From an original script by Daniel Tull
 # Somewhat mangled by Sam Deane
 
+# Run this script from the root of your project.
+# It makes a temporary directory and generates appledoc documentation for your
+# project in that directory.
+# It then makes a local clone of your documentation branch (called gh-pages, by default)
+# copies the generated appledoc html into a folder in the branch (called Documentation by default)
+# commits the new documentation and pushes it back to the project repo.
+#
+# Note that it doesn't push from the project repo, so the new documentation doesn't leave
+# your machine - you need to manually 'git push origin gh-pages:gh-pages' (or whatever) to
+# actually publish the gh-pages branch to the wider world.
+
 # This script assumes:
-# - your appledoc templates are in "$SCRIPTROOT/appledoc"
-# - you have a GlobalSettings.plist file in there
-# - you've set values in there for --project-company, --company-id
+# - the name of the root folder is the name of the project
+# - your appledoc templates are in "$SCRIPTROOT/appledoc"
+# - you have a GlobalSettings.plist file in your appledoc templates folder
+# - you've set values in GlobalSettings.plist for --project-company, --company-id
 
 codebranch=`git rev-parse --abbrev-ref HEAD`
 docbranch="gh-pages"
