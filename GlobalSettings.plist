@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>--project-company</key>
+	<string>Elegant Chaos</string>
+	<key>--company-id</key>
+	<string>com.elegantchaos</string>
+	<key>--keep-undocumented-objects</key>
+	<false/>
+	<key>--keep-undocumented-members</key>
+	<false/>
+	<key>--merge-categories</key>
+	<true/>
+	<key>--keep-merged-sections</key>
+	<true/>
+	<key>--prefix-merged-sections</key>
+	<false/>
+	<key>--docset-bundle-id</key>
+	<string>$COMPANYID.$PROJECT</string>
+	<key>--docset-bundle-name</key>
+	<string>$PROJECT</string>
+	<key>--ignore</key>
+	<array>
+		<string>.git</string>
+		<string>.gitmodules</string>
+		<string>.gitignore</string>
+		<string>Unit Tests</string>
+		<string>$PROJECT Project</string>
+		<string>Vendors</string>
+		<string>*.m</string>
+		<string>DCTFoundation</string>
+		<string>DCTUIKit</string>
+		<string>DCTConnectionController</string>
+		<string>DTNibHook</string>
+		<string>DCTCoreData</string>
+	</array>
+	<key>--repeat-first-par</key>
+	<false/>
+</dict>
+</plist>
