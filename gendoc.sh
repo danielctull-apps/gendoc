@@ -21,6 +21,7 @@
 # - you've set values in GlobalSettings.plist for --project-company, --company-id
 
 git=`xcrun --find git`
+docsetutil=`xcrun --find docsetutil`
 originaldirectory=`git rev-parse --show-toplevel`
 codebranch=`$git rev-parse --abbrev-ref HEAD`
 docbranch="gh-pages"
@@ -29,7 +30,6 @@ docdirectory="documentation"
 initialdefaultcommitmessage="Initial documentation"
 updatedefaultcommitmessage="Update documentation"
 defaultcommitmessage=$updatedefaultcommitmessage
-docsetutil=`xcrun --find docsetutil`
 tempdir=/tmp/gendoc
 
 # if we're on the documentation branch, something's gone wrong
@@ -47,7 +47,19 @@ mkdir -p -v "$tempdir"
 
 
 # generate docset and html, install docset in xcode, create atom feed and downloadable package
-appledoc --create-html --keep-intermediate-files --create-docset --publish-docset --docsetutil-path "$docsetutil" --docset-atom-filename "docset.atom" --docset-feed-url "http://danielctull.github.com/$projectname/$docdirectory/%DOCSETATOMFILENAME" --docset-package-url "http://danielctull.github.com/$projectname/$docdirectory/%DOCSETPACKAGEFILENAME" --docset-fallback-url "http://danielctull.github.com/$docdirectory/$projectname/" --project-name $projectname -o "$tempdir" "$@" ./
+appledoc \
+--keep-intermediate-files \
+--create-html \
+--create-docset \
+--install-docset \
+--publish-docset \
+--docsetutil-path "$docsetutil" \
+--docset-atom-filename "docset.atom" \
+--docset-feed-url "http://danielctull.github.com/$projectname/$docdirectory/%DOCSETATOMFILENAME" \
+--docset-package-url "http://danielctull.github.com/$projectname/$docdirectory/%DOCSETPACKAGEFILENAME" \
+--docset-fallback-url "http://danielctull.github.com/projectname/$docdirectory/" \
+--project-name $projectname \
+-o "$tempdir" "$@" ./
 
 # clone doc branch of current repo into temporary location
 $git clone $originaldirectory "$tempdir/branch"
