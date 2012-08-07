@@ -20,9 +20,11 @@
 # - you have a GlobalSettings.plist file in your appledoc templates folder
 # - you've set values in GlobalSettings.plist for --project-company, --company-id
 
-codebranch=`git rev-parse --abbrev-ref HEAD`
+git=`xcrun --find git`
+originaldirectory=`git rev-parse --show-toplevel`
+codebranch=`$git rev-parse --abbrev-ref HEAD`
 docbranch="gh-pages"
-projectname=$(pwd | sed "s/^.*\///g")
+projectname=`basename $PWD`
 docdirectory="Documentation"
 defaultcommitmessage="Update documentation."
 docsetutil=`xcrun --find docsetutil`
@@ -43,7 +45,7 @@ mkdir -p -v "$tempdir"
 
 
 # generate and install a docset in xcode
-appledoc --templates "$SCRIPTROOT/appledoc" --create-docset --install-docset --docsetutil-path "$docsetutil" --project-name $projectname -o "$tempdir" "$@" ./
+appledoc --create-docset --install-docset --docsetutil-path "$docsetutil" --project-name $projectname -o "$tempdir" "$@" ./
 
 # generate html version
 appledoc --templates ~/.appledoc --create-html --no-create-docset --docsetutil-path "$docsetutil" --project-name $projectname -o "$tempdir" "$@" ./
@@ -52,44 +54,37 @@ appledoc --templates ~/.appledoc --create-html --no-create-docset --docsetutil-p
 if [ $? == 0 ];
 then
 
-# if docbranch exists
-if git show-ref --tags --quiet --verify -- "refs/heads/$docbranch"
-then
-    echo "Cloning $docbranch branch"
-else
-    echo "Creating $docbranch branch"
-    git stash
-    # create the docbranch (explained on http://pages.github.com/)
-    git symbolic-ref HEAD "refs/heads/$docbranch"
-    rm .git/index
-    git clean -fdx
-    mkdir "$docdirectory"
-    touch "$docdirectory/placeholder.txt"
-    git add "$docdirectory"
-    git commit . -m "first commit"
-
-    # return to the branch we were on
-    git checkout "$codebranch"
-    git stash pop
-fi
-
 # clone doc branch of current repo into temporary location
-git clone . "$tempdir/branch" --branch $docbranch
-mkdir "$tempdir/branch/$docdirectory"
+$git clone $originaldirectory "$tempdir/branch" --quiet
 cd "$tempdir/branch"
 
+if $git show-ref --tags --quiet --verify -- "refs/heads/$docbranch"
+then
+	echo "Creating $docbranch branch"
+	$git checkout -b $docbranch
+else
+	echo "Checking out $docbranch branch"
+	$git checkout $docbranch
+fi
+
+$git clean -dfx
+
+mkdir "$tempdir/branch/$docdirectory"
+
+echo "$tempdir/branch"
+
 # make sure stale docs are removed - re-adding will cause an update
-git rm -rf "$docdirectory"
+$git rm -rf "$docdirectory"
 
 # move the generated docs to docdirectory and cleanup
 mv -v ../html "$docdirectory"
 
 # add directory and commit with default message, allowing editing
-git add -f -v "$docdirectory"
-git commit -e -m "$defaultcommitmessage"
+$git add -f -v "$docdirectory"
+$git commit -e -m "$defaultcommitmessage"
 
 # push changes back to our repo
-git push origin $docbranch
+$git push origin $docbranch
 
 # remove temporary directory
 rm -rf "$tempdir"
