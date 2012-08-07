@@ -22,14 +22,8 @@
 		<string>.gitmodules</string>
 		<string>.gitignore</string>
 		<string>Unit Tests</string>
-		<string>$PROJECT Project</string>
 		<string>Vendors</string>
 		<string>*.m</string>
-		<string>DCTFoundation</string>
-		<string>DCTUIKit</string>
-		<string>DCTConnectionController</string>
-		<string>DTNibHook</string>
-		<string>DCTCoreData</string>
 	</array>
 	<key>--repeat-first-par</key>
 	<false/>
