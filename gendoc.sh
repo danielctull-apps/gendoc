@@ -26,7 +26,9 @@ codebranch=`$git rev-parse --abbrev-ref HEAD`
 docbranch="gh-pages"
 projectname=`basename $PWD`
 docdirectory="Documentation"
-defaultcommitmessage="Update documentation."
+initialdefaultcommitmessage="Initial documentation"
+updatedefaultcommitmessage="Update documentation"
+defaultcommitmessage=$updatedefaultcommitmessage
 docsetutil=`xcrun --find docsetutil`
 tempdir=/tmp/gendoc
 
@@ -50,31 +52,25 @@ appledoc --create-docset --install-docset --docsetutil-path "$docsetutil" --proj
 # generate html version
 appledoc --templates ~/.appledoc --create-html --no-create-docset --docsetutil-path "$docsetutil" --project-name $projectname -o "$tempdir" "$@" ./
 
-# only proceed if appledoc actual worked
-if [ $? == 0 ];
-then
-
 # clone doc branch of current repo into temporary location
-$git clone $originaldirectory "$tempdir/branch" --quiet
-cd "$tempdir/branch"
+$git clone $originaldirectory "$tempdir/branch"
 
 if $git show-ref --tags --quiet --verify -- "refs/heads/$docbranch"
 then
-	echo "Creating $docbranch branch"
-	$git checkout -b $docbranch
-else
+	cd "$tempdir/branch"
 	echo "Checking out $docbranch branch"
 	$git checkout $docbranch
+else
+	cd "$tempdir/branch"
+	echo "Creating $docbranch branch"
+	defaultcommitmessage=$initialdefaultcommitmessage
+	$git symbolic-ref HEAD "refs/heads/$docbranch"
+	rm .git/index
+	$git clean -fdx
 fi
 
-$git clean -dfx
-
-mkdir "$tempdir/branch/$docdirectory"
-
-echo "$tempdir/branch"
-
 # make sure stale docs are removed - re-adding will cause an update
-$git rm -rf "$docdirectory"
+$git rm -rf "$docdirectory" --quiet
 
 # move the generated docs to docdirectory and cleanup
 mv -v ../html "$docdirectory"
@@ -88,5 +84,3 @@ $git push origin $docbranch
 
 # remove temporary directory
 rm -rf "$tempdir"
-
-fi
