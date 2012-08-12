@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# Original script by Daniel Tull, with additions by Sam Deane
+# From an original script by Daniel Tull
+# Somewhat mangled by Sam Deane
 
 # Run this script from the root of your project.
 # It makes a temporary directory and generates appledoc documentation for your
@@ -27,7 +28,7 @@ docsetutil=`xcrun --find docsetutil`
 originaldirectory=`git rev-parse --show-toplevel`
 codebranch=`$git rev-parse --abbrev-ref HEAD`
 docbranch="gh-pages"
-projectname=`basename $PWD`
+projectname=`basename "$PWD"`
 docdirectory="documentation"
 initialdefaultcommitmessage="Initial documentation"
 updatedefaultcommitmessage="Update documentation"
