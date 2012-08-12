@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# From an original script by Daniel Tull, with additions by Sam Deane
+# Original script by Daniel Tull, with additions by Sam Deane
 
 # Run this script from the root of your project.
 # It makes a temporary directory and generates appledoc documentation for your
