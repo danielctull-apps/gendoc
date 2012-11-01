@@ -4,8 +4,11 @@ It makes a temporary directory and generates appledoc documentation for your pro
 
 It then makes a local clone of your documentation branch (called gh-pages, by default), copies the generated appledoc html into a folder in the branch (called Documentation by default), commits the new documentation and pushes it back to the project repo.
 
-Note that it doesn't push from the project repo, so the new documentation doesn't leave
-your machine - but it echos the git command that you'll need to execute to do the push.
+At the same time, the script generates an Xcode docset for the documentation, installs it into the right place on your local machine, and includes it in the pages that get uploaded to github, along with an rss feed that can be used to subscribe to the docset.
+
+It then optionally pushes the new documentation back up to github (see Options below).
+
+## Assumptions
 
 This script assumes:
 - the name of the root folder is the name of the project
@@ -17,13 +20,13 @@ The script looks at the remotes configured in the repo to try to work out what y
 user name is, so that it can generate the correct urls for a docset feed.
 It looks for the first remote with the pattern: git@github.com:yourname/
 
-The script looks for a file `.appledoc.plist` at the root of your project. If it finds it, it reads additional appledoc settings from it. You can use this to customise your settings on a per-project basis.
-
 ## Options
 
-There are currently three options that you can set by editing the top of the script.
+The script looks for a file `.appledoc.plist` at the root of your project. If it finds it, it reads additional appledoc settings from it. You can use this to customise your Appledoc settings on a per-project basis.
 
-Setting `publish` to true causes the generated pages to be pushed back up to github. If it's set to false, the script just echoes out the push command that you would need to use.
+There are also currently three options that you can set by editing the top of the script.
+
+Setting `publish` to true causes the generated pages to be pushed back up to github. If it's set to false, the script just echoes out the git command that you would need to use to do the push.
 
 Setting `open` to true opens the index page of the generated documentation in your default browser. Github can take a while to update the pages after you've pushed, so this isn't always a useful thing to do.
 
