@@ -71,7 +71,7 @@ appledoc \
     --docset-atom-filename "docset.atom" \
     --docset-feed-url "http://$githubuser.github.com/$projectname/$docdirectory/%DOCSETATOMFILENAME" \
     --docset-package-url "http://$githubuser.github.com/$projectname/$docdirectory/%DOCSETPACKAGEFILENAME" \
-    --docset-fallback-url "http://$githubuser.github.com/projectname/$docdirectory/" \
+    --docset-fallback-url "http://$githubuser.github.com/$projectname/$docdirectory/" \
     --project-name $projectname \
     -o "$tempdir" "$@" $settings ./
 
