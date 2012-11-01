@@ -16,3 +16,22 @@ This script assumes:
 The script looks at the remotes configured in the repo to try to work out what your github
 user name is, so that it can generate the correct urls for a docset feed.
 It looks for the first remote with the pattern: git@github.com:yourname/
+
+The script looks for a file `.appledoc.plist` at the root of your project. If it finds it, it reads additional appledoc settings from it. You can use this to customise your settings on a per-project basis.
+
+## Options
+
+There are currently three options that you can set by editing the top of the script.
+
+Setting `publish` to true causes the generated pages to be pushed back up to github. If it's set to false, the script just echoes out the push command that you would need to use.
+
+Setting `open` to true opens the index page of the generated documentation in your default browser. Github can take a while to update the pages after you've pushed, so this isn't always a useful thing to do.
+
+Setting `editcommit` to true gives you a chance to edit the message used when committing the generated documentation to the gh-pages branch. I default this to false as these messages tend not to be particularly useful. Typically I will have used a sensible commit message when actually changing the source files from which the documentation is generated, so another commit message just to say that it's been generated tends to be overkill.
+
+One day I might get round to refining the script so that these options can be specified on the command line... one day...
+
+## Credits
+
+From an original script by Daniel Tull.
+Somewhat mangled by Sam Deane.
